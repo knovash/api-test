@@ -15,8 +15,8 @@ import static io.restassured.RestAssured.given;
 @Log4j2
 public class ApiTest {
 
-    static ResourceBundle bundle = ResourceBundle.getBundle("config");
-    private final String URL = bundle.getString("URL");
+    private ResourceBundle bundle = ResourceBundle.getBundle("config");
+    private final String SERVERADDRESS = bundle.getString("URL");
 
     @Description("Verify that get volume status is 200")
     @Test
@@ -27,7 +27,7 @@ public class ApiTest {
         Response response = given()
                 .body(request)
                 .when()
-                .post(URL)
+                .post(SERVERADDRESS)
                 .then().log().all()
                 .assertThat().statusCode(200)
                 .extract().as(Response.class);
@@ -44,7 +44,7 @@ public class ApiTest {
         Response response = given()
                 .body(request)
                 .when()
-                .post(URL)
+                .post(SERVERADDRESS)
                 .then().log().all()
                 .assertThat().statusCode(200)
                 .extract().as(Response.class);
@@ -61,7 +61,7 @@ public class ApiTest {
         Response response = given()
                 .body(request)
                 .when()
-                .post(URL)
+                .post(SERVERADDRESS)
                 .then().log().all()
                 .assertThat().statusCode(200)
                 .extract().as(Response.class);
@@ -78,7 +78,7 @@ public class ApiTest {
         Response response = given()
                 .body(request)
                 .when()
-                .post(URL)
+                .post(SERVERADDRESS)
                 .then().log().all()
                 .assertThat().statusCode(200)
                 .extract().as(Response.class);
@@ -94,26 +94,19 @@ public class ApiTest {
         Request request = Requests.setVolume(value);
         log.info("REQUEST: " + request);
         Response response = given()
-                .body(request)
-                .when()
-                .post(URL)
-                .then().log().all()
+                .body(request).when().post(SERVERADDRESS).then().log().all()
                 .assertThat().statusCode(200)
                 .extract().as(Response.class);
         log.info("RESPONSE: " + response);
 
-        log.info("TEST GET VOLUME");
         request = Requests.getVolume;
         log.info("REQUEST: " + request);
-        response = given()
-                .body(request)
-                .when()
-                .post(URL)
-                .then().log().all()
+        response = given().body(request)
+                .when().post(SERVERADDRESS).then().log().all()
                 .assertThat().statusCode(200)
                 .extract().as(Response.class);
-        Assert.assertEquals(response.getResult().get_volume(), value);
         log.info("RESPONSE: " + response);
         log.info("GET VOLUME: " + response.result._volume);
+        Assert.assertEquals(response.getResult().get_volume(), value);
     }
 }
